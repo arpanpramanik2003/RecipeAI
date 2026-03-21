@@ -3,20 +3,6 @@ import { motion, useInView } from 'framer-motion';
 import { Clock, ChevronRight } from 'lucide-react';
 import { suggestedRecipes } from '@/data/recipes';
 
-import butterChicken from '@/assets/butter-chicken.jpg';
-import pastaAlfredo from '@/assets/pasta-alfredo.jpg';
-import vegFriedRice from '@/assets/veg-fried-rice.jpg';
-import tacos from '@/assets/tacos.jpg';
-import saladBowl from '@/assets/salad-bowl.jpg';
-
-const imageMap: Record<string, string> = {
-  'butter-chicken': butterChicken,
-  'pasta-alfredo': pastaAlfredo,
-  'veg-fried-rice': vegFriedRice,
-  'tacos': tacos,
-  'salad-bowl': saladBowl,
-};
-
 interface Props {
   onSelectRecipe: (id: string) => void;
 }
@@ -52,7 +38,7 @@ const SuggestedRecipes = ({ onSelectRecipe }: Props) => {
               <div className="glass rounded-3xl overflow-hidden glass-hover transition-all duration-300 group-hover:-translate-y-1">
                 <div className="relative h-44 overflow-hidden">
                   <img
-                    src={imageMap[recipe.image]}
+                    src={recipe.image}
                     alt={recipe.title}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     loading="lazy"

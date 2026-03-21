@@ -41,8 +41,8 @@ const IngredientInput = ({ ingredients, onChange }: IngredientInputProps) => {
 
   return (
     <div className="space-y-3">
-      <label className="text-sm font-medium text-foreground">Ingredients</label>
-      <div className="flex flex-wrap gap-2 p-3 rounded-2xl bg-muted/50 border border-border focus-within:ring-2 focus-within:ring-primary/30 focus-within:border-primary/40 transition-all duration-200 min-h-[52px]">
+      <label className="text-sm font-semibold text-foreground tracking-wide">Ingredients</label>
+      <div className="flex flex-wrap gap-2 p-3.5 rounded-2xl bg-muted/20 border-2 border-border/80 focus-within:ring-4 focus-within:ring-primary/20 focus-within:border-primary/50 transition-all duration-300 min-h-[56px] focus-within:shadow-[0_0_30px_hsl(330_80%_60%_/_0.15)] backdrop-blur-md">
         <AnimatePresence mode="popLayout">
           {ingredients.map((ing, i) => (
             <motion.span

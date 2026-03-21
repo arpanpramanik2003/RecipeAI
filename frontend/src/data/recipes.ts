@@ -2,7 +2,7 @@ export interface Recipe {
   id: string;
   title: string;
   description: string;
-  image: string;
+  image?: string;
   cuisine: string;
   cuisineEmoji: string;
   cookingTime: string;
@@ -20,7 +20,7 @@ export const suggestedRecipes: Omit<Recipe, 'ingredients' | 'steps' | 'calories'
     id: '1',
     title: 'Butter Chicken',
     description: 'Rich, creamy tomato-based curry with tender chicken pieces and aromatic spices.',
-    image: 'butter-chicken',
+    image: 'https://images.unsplash.com/photo-1603894584373-5ac82b6ae398?auto=format&fit=crop&q=80&w=800',
     cuisine: 'Indian',
     cuisineEmoji: '🍛',
     cookingTime: '45 min',
@@ -31,7 +31,7 @@ export const suggestedRecipes: Omit<Recipe, 'ingredients' | 'steps' | 'calories'
     id: '2',
     title: 'Pasta Alfredo',
     description: 'Silky smooth fettuccine in a luxurious parmesan cream sauce with fresh basil.',
-    image: 'pasta-alfredo',
+    image: 'https://images.unsplash.com/photo-1645112411341-6c4fd023714a?auto=format&fit=crop&q=80&w=800',
     cuisine: 'Italian',
     cuisineEmoji: '🍝',
     cookingTime: '25 min',
@@ -42,7 +42,7 @@ export const suggestedRecipes: Omit<Recipe, 'ingredients' | 'steps' | 'calories'
     id: '3',
     title: 'Veg Fried Rice',
     description: 'Wok-tossed rice with colorful vegetables, soy sauce, and aromatic garlic.',
-    image: 'veg-fried-rice',
+    image: 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?auto=format&fit=crop&q=80&w=800',
     cuisine: 'Chinese',
     cuisineEmoji: '🍜',
     cookingTime: '20 min',
@@ -53,7 +53,7 @@ export const suggestedRecipes: Omit<Recipe, 'ingredients' | 'steps' | 'calories'
     id: '4',
     title: 'Chicken Tacos',
     description: 'Spiced pulled chicken with fresh guacamole, salsa, and lime in warm tortillas.',
-    image: 'tacos',
+    image: 'https://images.unsplash.com/photo-1551504734-5ee1c4a1479b?auto=format&fit=crop&q=80&w=800',
     cuisine: 'Mexican',
     cuisineEmoji: '🌮',
     cookingTime: '35 min',
@@ -64,7 +64,7 @@ export const suggestedRecipes: Omit<Recipe, 'ingredients' | 'steps' | 'calories'
     id: '5',
     title: 'Buddha Bowl',
     description: 'Nourishing grain bowl with avocado, greens, cherry tomatoes, and seeds.',
-    image: 'salad-bowl',
+    image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&q=80&w=800',
     cuisine: 'Healthy',
     cuisineEmoji: '🥗',
     cookingTime: '15 min',
@@ -77,7 +77,6 @@ export const fullRecipe: Recipe = {
   id: '1',
   title: 'Butter Chicken',
   description: 'A classic North Indian dish with tender chicken in a rich, creamy tomato gravy.',
-  image: 'butter-chicken',
   cuisine: 'Indian',
   cuisineEmoji: '🍛',
   cookingTime: '45 min',
