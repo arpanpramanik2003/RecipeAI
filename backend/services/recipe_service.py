@@ -7,19 +7,31 @@ from models.schemas import RecipeRequest, RecipeResponse
 client = Groq(api_key=settings.GROQ_API_KEY)
 
 def generate_recipe(request: RecipeRequest) -> RecipeResponse:
+    has_ingredients = bool(request.ingredients and len(request.ingredients) > 0)
+
+    if has_ingredients:
+        ingredient_rule = (
+            "CRITICAL INGREDIENT RULE: The user has provided their own ingredients. "
+            "You MUST build the recipe primarily around those exact ingredients. "
+            "You may ONLY add up to 2-3 minimal pantry staples (e.g. salt, oil, water, pepper) if absolutely necessary. "
+            "Do NOT add significant new ingredients (meats, vegetables, dairy, grains, sauces) that the user did not provide. "
+        )
+    else:
+        ingredient_rule = "The user has requested a specific dish. Generate a complete authentic recipe with all necessary ingredients. "
+
     system_prompt = (
         "You are an expert master chef AI. Generate an incredibly detailed and authentic recipe based on the user's request. "
-        "The user will either give you a dish name, or a list of ingredients and a cuisine. Invent a delicious recipe fitting the parameters! "
+        + ingredient_rule +
         "You MUST provide a very rich context: write an appealing, comprehensive 2-3 sentence description detailing the flavor profile. "
-        "Include meticulous step-by-step instructions. Ensure exact, realistic measurements for all ingredients. "
+        "Include meticulous step-by-step instructions with precise timings. Ensure exact, realistic measurements for all ingredients. "
         "Provide accurate estimates for calories, health score (0-100), and cooking time.\n"
         "You MUST strictly format your response as a valid JSON object matching this schema exactly:\n"
         "{\n"
         '  "id": "unique-id-string",\n'
         '  "title": "Recipe Title",\n'
         '  "description": "Rich, multi-sentence appetizing description detailing flavor profile and origins.",\n'
-        '  "cuisine": "American",\n'
-        '  "cuisineEmoji": "🍔",\n'
+        '  "cuisine": "Indian",\n'
+        '  "cuisineEmoji": "🍛",\n'
         '  "cookingTime": "30 min",\n'
         '  "difficulty": "Easy",\n'
         '  "servings": 2,\n'
@@ -36,7 +48,7 @@ def generate_recipe(request: RecipeRequest) -> RecipeResponse:
     if request.dish_name:
         user_prompt += f"Dish desired: {request.dish_name}. "
     if request.ingredients:
-        user_prompt += f"I have these ingredients: {', '.join(request.ingredients)}. "
+        user_prompt += f"I have these ingredients available: {', '.join(request.ingredients)}. Use these as the primary ingredients. "
     if request.cuisine:
         user_prompt += f"Make it {request.cuisine} style. "
     if request.servings:

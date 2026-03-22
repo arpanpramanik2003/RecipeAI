@@ -1,6 +1,6 @@
-import { useState, useRef } from 'react';
+import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { Clock, BarChart3, Globe, RefreshCw, Bookmark, Share2, Check } from 'lucide-react';
+import { Clock, BarChart3, Globe, RefreshCw, Bookmark, Share2 } from 'lucide-react';
 import { Recipe } from '@/data/recipes';
 import HealthAnalysis from './HealthAnalysis';
 
@@ -10,16 +10,8 @@ interface Props {
 }
 
 const GeneratedRecipe = ({ recipe, onRegenerate }: Props) => {
-  const [checkedItems, setCheckedItems] = useState<Set<number>>(new Set());
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, amount: 0.1 });
-
-  const toggleCheck = (idx: number) => {
-    const next = new Set(checkedItems);
-    if (next.has(idx)) next.delete(idx);
-    else next.add(idx);
-    setCheckedItems(next);
-  };
 
   return (
     <section ref={ref} className="py-20 px-6">
@@ -32,23 +24,25 @@ const GeneratedRecipe = ({ recipe, onRegenerate }: Props) => {
           className="glass rounded-3xl overflow-hidden"
         >
           <div className="relative h-56 sm:h-72 overflow-hidden gradient-bg flex flex-col justify-end p-6 sm:p-8">
-            <div className="absolute inset-0 bg-black/15 mix-blend-overlay pointer-events-none z-10" />
-            
+            {/* Overlay always on top of the gradient or image */}
+            <div className="absolute inset-0 bg-black/20 pointer-events-none z-10" />
+            <div className="absolute inset-x-0 bottom-0 h-4/5 bg-gradient-to-t from-black/90 via-black/50 to-transparent pointer-events-none z-10" />
+
+            {/* Only render img when we have a valid URL — avoids broken placeholder */}
             {recipe.image && (
-              <img 
-                src={recipe.image} 
-                alt={recipe.title} 
-                className="absolute inset-0 w-full h-full object-cover z-0 transition-transform duration-700 hover:scale-105" 
+              <img
+                src={recipe.image}
+                alt={recipe.title}
+                className="absolute inset-0 w-full h-full object-cover z-0 transition-transform duration-700 hover:scale-105"
+                onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
                 crossOrigin="anonymous"
-                loading="lazy"
+                loading="eager"
               />
             )}
-            
-            <div className="absolute inset-x-0 bottom-0 h-4/5 bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none z-10" />
-            
+
             <div className="relative z-20 w-full">
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-tight drop-shadow-lg pb-3">{recipe.title}</h2>
-              <p className="text-white/95 text-sm sm:text-base font-medium drop-shadow-md leading-relaxed max-w-2xl">{recipe.description}</p>
+              <p className="text-white/90 text-sm sm:text-base font-medium drop-shadow-md leading-relaxed max-w-2xl">{recipe.description}</p>
             </div>
           </div>
 
@@ -78,35 +72,22 @@ const GeneratedRecipe = ({ recipe, onRegenerate }: Props) => {
           transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
           className="glass rounded-3xl p-6 sm:p-8 border-2 border-border/80 shadow-lg bg-gradient-to-br from-background/40 to-muted/20"
         >
-          <h3 className="text-xl font-bold text-foreground mb-6 flex items-center gap-2">
+          <h3 className="text-xl font-bold text-foreground mb-5 flex items-center gap-2">
             <span className="p-2 gradient-bg rounded-lg text-white shadow-md">🥗</span> Ingredients
           </h3>
-          <div className="space-y-2">
+          <div className="space-y-1.5">
             {recipe.ingredients.map((ing, i) => (
-              <motion.button
+              <motion.div
                 key={i}
                 initial={{ opacity: 0, x: -10 }}
                 animate={inView ? { opacity: 1, x: 0 } : {}}
                 transition={{ duration: 0.3, delay: 0.2 + i * 0.04 }}
-                onClick={() => toggleCheck(i)}
-                className={`w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-300 text-left border ${
-                  checkedItems.has(i) 
-                  ? 'bg-primary/5 border-primary/30 shadow-inner' 
-                  : 'bg-muted/20 border-transparent hover:bg-muted/40 hover:border-border/50'
-                }`}
+                className="flex items-center gap-4 px-4 py-3 rounded-xl bg-muted/30 border border-border/40 hover:bg-muted/50 transition-colors duration-200"
               >
-                <span className={`w-6 h-6 rounded-lg border-2 flex items-center justify-center flex-shrink-0 transition-all duration-300 ${
-                  checkedItems.has(i) ? 'border-primary bg-primary shadow-[0_0_10px_hsl(330_80%_60%_/_0.4)]' : 'border-muted-foreground/30'
-                }`}>
-                  <motion.div initial={{ scale: 0 }} animate={{ scale: checkedItems.has(i) ? 1 : 0 }} className="flex items-center justify-center">
-                    <Check className="w-3.5 h-3.5 text-white stroke-[3.5]" />
-                  </motion.div>
-                </span>
-                <span className={`flex-1 text-base transition-all duration-300 ${checkedItems.has(i) ? 'line-through text-muted-foreground opacity-60' : 'text-foreground font-medium'}`}>
-                  {ing.name}
-                </span>
-                <span className={`text-sm font-bold transition-all duration-300 ${checkedItems.has(i) ? 'text-muted-foreground/40' : 'text-primary'}`}>{ing.quantity}</span>
-              </motion.button>
+                <span className="w-2 h-2 rounded-full bg-gradient-to-br from-purple-500 to-orange-500 flex-shrink-0" />
+                <span className="flex-1 text-base text-foreground font-medium">{ing.name}</span>
+                <span className="text-sm font-bold text-primary bg-primary/8 px-2.5 py-0.5 rounded-lg">{ing.quantity}</span>
+              </motion.div>
             ))}
           </div>
         </motion.div>

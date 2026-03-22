@@ -13,6 +13,9 @@ const dishes = [
   { src: '/snacks.jpg', label: 'Evening Snacks', category: 'Snacks' },
   { src: '/soup.jpg', label: 'Hearty Soup', category: 'Starter' },
   { src: '/steam momo.jpg', label: 'Steamed Momos', category: 'Street Food' },
+  { src: '/biriyani.jpg', label: 'Biryani', category: 'Main Course' },
+  { src: '/pasta.jpg', label: 'Al Dente Pasta', category: 'Italian' },
+  { src: '/pastry cake.jpg', label: 'Pastry Cake', category: 'Dessert' },
 ];
 
 const stats = [
