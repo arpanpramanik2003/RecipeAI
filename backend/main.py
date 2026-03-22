@@ -20,9 +20,11 @@ app.add_middleware(
 app.include_router(api_router, prefix="/api")
 
 @app.get("/")
+@app.head("/")
 def read_root():
     return {"message": "Welcome to Recipe Maker AI Backend!"}
 
 @app.get("/health")
+@app.head("/health")
 def health_check():
     return {"status": "healthy"}
