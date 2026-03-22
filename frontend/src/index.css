@@ -64,6 +64,31 @@
   body {
     @apply bg-background text-foreground antialiased;
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 200%;
+    height: 200%;
+    background-image: linear-gradient(
+      45deg,
+      hsl(var(--primary) / 0.02) 25%,
+      transparent 25%,
+      transparent 50%,
+      hsl(var(--primary) / 0.02) 50%,
+      hsl(var(--primary) / 0.02) 75%,
+      transparent 75%,
+      transparent
+    );
+    background-size: 60px 60px;
+    z-index: -20;
+    animation: move-stripes 60s linear infinite;
+    pointer-events: none;
   }
 }
 
@@ -159,4 +184,9 @@
 
 .animate-pulse-glow {
   animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes move-stripes {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(-60px, -60px); }
 }

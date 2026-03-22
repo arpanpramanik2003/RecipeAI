@@ -60,6 +60,7 @@ const Navbar = () => {
             </Link>
             <Link 
               to="/generator" 
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
               className={`relative px-4 py-2 text-sm font-semibold transition-all duration-300 rounded-full hover:bg-muted/50 ${isActive('/generator') ? 'text-primary' : 'text-foreground/70 hover:text-foreground'}`}
             >
               Dish Generator

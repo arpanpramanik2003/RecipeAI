@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Minus, Plus, Zap } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import HeroSection from '@/components/HeroSection';
-import SuggestedRecipes from '@/components/SuggestedRecipes';
 import GeneratedRecipe from '@/components/GeneratedRecipe';
 import LoadingState from '@/components/LoadingState';
 import { Recipe, suggestedRecipes } from '@/data/recipes';
@@ -117,7 +116,7 @@ const PantryChef = () => {
       if (data.cuisine) payload.cuisine = data.cuisine;
       if (data.dish_name) payload.dish_name = data.dish_name;
 
-      const response = await fetch('http://localhost:8000/api/generate-recipe', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/generate-recipe`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -310,8 +309,6 @@ const PantryChef = () => {
         </AnimatePresence>
       </div>
 
-      {/* ── POPULAR RECIPES ──────────────────────────── */}
-      <SuggestedRecipes onSelectRecipe={handleSelectRecipe} />
     </div>
   );
 };
