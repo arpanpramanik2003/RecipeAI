@@ -53,25 +53,25 @@ export default function Index() {
       <Navbar />
 
       {/* ─── HERO ──────────────────────────────────────────────────── */}
-      <section className="relative flex flex-col justify-center min-h-[95vh] pt-32 pb-20 px-6 xl:px-12 overflow-hidden">
+      <section className="relative flex flex-col justify-center min-h-[95vh] pt-28 md:pt-32 pb-16 md:pb-20 px-4 sm:px-6 xl:px-12 overflow-hidden">
         {/* Ambient blobs */}
-        <motion.div style={{ y: heroBgY }} className="pointer-events-none absolute inset-0 -z-10">
-          <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-primary/20 blur-[120px] rounded-full animate-pulse-glow" />
-          <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-[hsl(40_80%_55%)]/15 blur-[120px] rounded-full" />
+        <motion.div style={{ y: heroBgY }} className="pointer-events-none absolute inset-0 -z-10 bg-background overflow-hidden overflow-x-hidden">
+          <div className="absolute top-0 left-[-20%] md:left-1/4 w-[400px] md:w-[600px] h-[400px] md:h-[600px] bg-primary/20 blur-[120px] rounded-full animate-pulse-glow" />
+          <div className="absolute bottom-0 right-[-20%] md:right-1/4 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-[hsl(40_80%_55%)]/15 blur-[120px] rounded-full" />
         </motion.div>
 
-        <div className="max-w-[90rem] mx-auto w-full grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-12 lg:gap-8 items-center">
+        <div className="max-w-[90rem] mx-auto w-full grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-8 lg:gap-8 items-center mt-6 lg:mt-0">
           
           {/* Left Side (Text & CTAs) */}
-          <div className="flex flex-col z-10 lg:pr-8">
+          <div className="flex flex-col z-10 lg:pr-8 items-center lg:items-start text-center lg:text-left">
             {/* Badge */}
             <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="mb-8 self-start inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 backdrop-blur px-5 py-2 text-sm font-semibold text-primary shadow-[0_0_15px_hsl(140_60%_40%_/_0.15)]"
+              className="mb-6 lg:mb-8 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 backdrop-blur px-4 py-1.5 lg:px-5 lg:py-2 text-xs lg:text-sm font-semibold text-primary shadow-[0_0_15px_hsl(140_60%_40%_/_0.15)]"
             >
-              <Sparkles className="w-4 h-4 animate-pulse" />
+              <Sparkles className="w-3.5 h-3.5 lg:w-4 lg:h-4 animate-pulse" />
               Next-Generation Culinary AI
             </motion.div>
 
@@ -80,11 +80,11 @@ export default function Index() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.1 }}
-              className="text-left text-5xl sm:text-6xl md:text-[5rem] lg:text-[5.5rem] font-black leading-[1.05] tracking-tight text-balance"
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-[5rem] xl:text-[5.5rem] font-black leading-[1.1] tracking-tight text-balance"
             >
               Cook smarter.{' '}
-              <span className="gradient-text drop-shadow-sm">Eat better.</span>
-              <br />Every single day.
+              <span className="gradient-text drop-shadow-sm block lg:inline">Eat better.</span>
+              <br className="hidden lg:block" /> Every single day.
             </motion.h1>
 
             {/* Subheading */}
@@ -92,7 +92,7 @@ export default function Index() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="mt-7 max-w-xl text-left text-lg sm:text-xl text-muted-foreground leading-relaxed text-balance"
+              className="mt-5 lg:mt-7 max-w-lg lg:max-w-xl text-base sm:text-lg lg:text-xl text-muted-foreground leading-relaxed text-balance"
             >
               Tell us what's in your fridge — or what you're craving — and our AI chef will craft the perfect earthy recipe, complete with a health score and your personal sous-chef on standby.
             </motion.p>
@@ -102,15 +102,15 @@ export default function Index() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
-              className="mt-10 flex flex-col sm:flex-row items-center sm:items-start gap-4"
+              className="mt-8 lg:mt-10 flex flex-col sm:flex-row items-center w-full sm:w-auto shrink-0 gap-3 lg:gap-4 justify-center lg:justify-start"
             >
               <Link to="/pantry" className="w-full sm:w-auto">
                 <motion.button
                   whileHover={{ scale: 1.04 }}
                   whileTap={{ scale: 0.96 }}
-                  className="w-full h-15 px-8 py-4 rounded-full gradient-bg text-white font-bold text-lg flex items-center justify-center gap-3 shadow-[0_0_40px_hsl(140_60%_40%_/_0.35)] hover:shadow-[0_0_60px_hsl(140_60%_40%_/_0.5)] transition-all duration-300 glow-primary"
+                  className="w-full h-14 lg:h-15 px-6 lg:px-8 py-3 lg:py-4 rounded-full gradient-bg text-white font-bold text-base lg:text-lg flex items-center justify-center gap-2.5 shadow-[0_0_40px_hsl(140_60%_40%_/_0.35)] hover:shadow-[0_0_60px_hsl(140_60%_40%_/_0.5)] transition-all duration-300 glow-primary"
                 >
-                  <Salad className="w-6 h-6" />
+                  <Salad className="w-5 h-5 lg:w-6 lg:h-6" />
                   Start from your Fridge
                 </motion.button>
               </Link>
@@ -118,11 +118,11 @@ export default function Index() {
                 <motion.button
                   whileHover={{ scale: 1.04 }}
                   whileTap={{ scale: 0.96 }}
-                  className="w-full h-15 px-8 py-4 rounded-full border-2 border-primary/30 bg-background/60 backdrop-blur text-foreground font-bold text-lg flex items-center justify-center gap-2 hover:border-primary/60 hover:bg-primary/5 transition-all duration-300"
+                  className="w-full h-14 lg:h-15 px-6 lg:px-8 py-3 lg:py-4 rounded-full border-2 border-primary/30 bg-background/60 backdrop-blur text-foreground font-bold text-base lg:text-lg flex items-center justify-center gap-2 hover:border-primary/60 hover:bg-primary/5 transition-all duration-300"
                 >
-                  <ChefHat className="w-6 h-6 text-primary" />
+                  <ChefHat className="w-5 h-5 lg:w-6 lg:h-6 text-primary" />
                   Craving a dish?
-                  <ArrowRight className="w-5 h-5 ml-1" />
+                  <ArrowRight className="w-4 h-4 lg:w-5 lg:h-5 ml-1" />
                 </motion.button>
               </Link>
             </motion.div>
@@ -132,13 +132,13 @@ export default function Index() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
-              className="mt-14 flex flex-wrap items-center justify-start gap-12"
+              className="mt-10 md:mt-14 flex flex-wrap items-center justify-center lg:justify-start gap-6 sm:gap-10 lg:gap-12"
             >
               {stats.map((s, i) => (
-                <div key={i} className="flex flex-col items-start gap-1">
+                <div key={i} className="flex flex-col items-center lg:items-start gap-1">
                   <div className="flex items-center gap-1.5 text-primary bg-primary/10 px-2 py-1 rounded-md mb-1">{s.icon}</div>
-                  <span className="text-3xl font-black">{s.value}</span>
-                  <span className="text-sm text-muted-foreground font-bold uppercase tracking-wider">{s.label}</span>
+                  <span className="text-2xl sm:text-3xl font-black">{s.value}</span>
+                  <span className="text-xs sm:text-sm text-muted-foreground font-bold uppercase tracking-wider">{s.label}</span>
                 </div>
               ))}
             </motion.div>
@@ -149,7 +149,7 @@ export default function Index() {
             initial={{ opacity: 0, scale: 0.9, filter: 'blur(10px)' }}
             animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
             transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="w-full h-full min-h-[500px] lg:min-[600px] relative z-0 flex items-center justify-center mt-10 lg:mt-0"
+            className="w-full h-full min-h-[350px] sm:min-[450px] lg:min-[600px] relative z-0 flex items-center justify-center mt-6 lg:mt-0"
           >
             <AnimatedChef />
           </motion.div>
