@@ -1,15 +1,26 @@
-import { useEffect, useState, useMemo } from "react";
-import { useAuth, useUser } from "@clerk/clerk-react";
+// import { useEffect, useState, useMemo } from "react";
+// import { useAuth, useUser } from "@clerk/clerk-react";
 import { useLocation, Navigate, useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import { Mail, Lock, Loader2, Eye, EyeOff, Github, Chrome } from "lucide-react";
-import { Clerk } from "@clerk/clerk-js";
+// import { Clerk } from "@clerk/clerk-js";
+import { useEffect, useState } from "react";
+import {
+  useAuth,
+  useUser,
+  useSignIn,
+  useSignUp,
+  useClerk,
+} from "@clerk/clerk-react";
 
 const Auth = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { isLoaded, userId, signOut } = useAuth();
   const { user } = useUser();
+  const { signIn, isLoaded: signInLoaded } = useSignIn();
+  const { signUp, isLoaded: signUpLoaded } = useSignUp();
+  const { setActive } = useClerk();
 
   const [mode, setMode] = useState<"signin" | "signup">(
     new URLSearchParams(location.search).get("mode") === "signup" ? "signup" : "signin"
@@ -23,18 +34,18 @@ const Auth = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
-  const [clerkInstance, setClerkInstance] = useState<Clerk | null>(null);
+  // const [clerkInstance, setClerkInstance] = useState<Clerk | null>(null);
 
   // Initialize Clerk instance
-  useEffect(() => {
-    const publishableKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
-    if (publishableKey && !clerkInstance) {
-      const clerk = new Clerk(publishableKey);
-      clerk.load().then(() => {
-        setClerkInstance(clerk);
-      });
-    }
-  }, [clerkInstance]);
+  // useEffect(() => {
+  //   const publishableKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+  //   if (publishableKey && !clerkInstance) {
+  //     const clerk = new Clerk(publishableKey);
+  //     clerk.load().then(() => {
+  //       setClerkInstance(clerk);
+  //     });
+  //   }
+  // }, [clerkInstance]);
 
   // Update mode when URL changes
   useEffect(() => {
@@ -48,7 +59,7 @@ const Auth = () => {
     setLastName("");
   }, [location.search]);
 
-  if (!isLoaded) {
+  if (!isLoaded || !signInLoaded || !signUpLoaded) {
     return <div className="min-h-screen bg-background pt-28 text-center text-muted-foreground">Loading...</div>;
   }
 
@@ -57,44 +68,41 @@ const Auth = () => {
   }
 
   const handleSignIn = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-    setLoading(true);
+  e.preventDefault();
 
-    try {
-      if (!clerkInstance?.client) throw new Error("Clerk not initialized");
+  if (!signIn) return;
 
-      // Create sign-in attempt
-      const signInAttempt = await clerkInstance.client.signIn.create({
-        identifier: email,
-        password,
+  setLoading(true);
+  setError(null);
+
+  try {
+    const result = await signIn.create({
+      identifier: email,
+      password,
+    });
+
+    if (result.status === "complete") {
+      await setActive({
+        session: result.createdSessionId,
       });
 
-      // Handle the result
-      if (signInAttempt.status === "complete") {
-        // Successfully signed in, set the active session
-        const userId = signInAttempt.createdUserId;
-        const sessionId = signInAttempt.createdSessionId;
-        
-        if (sessionId) {
-          await clerkInstance.setActive({ session: sessionId });
-          navigate("/pantry");
-        }
-      } else {
-        // Handle incomplete sign-in (e.g., MFA required)
-        setError("Sign in incomplete. Please try again.");
-      }
-    } catch (err: any) {
-      const errorMessage =
-        err?.errors?.[0]?.message ||
-        err?.errors?.[0]?.longMessage ||
-        err?.message ||
-        "Sign in failed. Please check your credentials.";
-      setError(errorMessage);
-    } finally {
-      setLoading(false);
+      navigate("/pantry");
+      return;
     }
-  };
+
+    setError("Additional verification is required.");
+  } catch (err: any) {
+    console.error("Sign In Error:", err);
+
+    setError(
+      err?.errors?.[0]?.longMessage ||
+      err?.errors?.[0]?.message ||
+      "Invalid email or password."
+    );
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
