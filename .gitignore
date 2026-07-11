@@ -1,0 +1,7 @@
+# Global environment safety
+**/.env
+**/.env.*
+!**/.env.example
+
+# Local editor/workspace files
+.vscode/

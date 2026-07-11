@@ -13,6 +13,7 @@ interface Props {
 const GeneratedRecipe = ({ recipe, onRegenerate }: Props) => {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, amount: 0.05 });
+  const fallbackImage = `https://picsum.photos/seed/${encodeURIComponent(recipe.title)}/1200/700`;
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -64,7 +65,16 @@ const GeneratedRecipe = ({ recipe, onRegenerate }: Props) => {
               src={recipe.image} alt={recipe.title}
               className="absolute inset-0 w-full h-full object-cover"
               crossOrigin="anonymous" loading="eager"
-              onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+              onError={(e) => {
+                const target = e.currentTarget as HTMLImageElement;
+                if (target.dataset.fallbackApplied === 'true') {
+                  target.style.display = 'none';
+                  return;
+                }
+
+                target.dataset.fallbackApplied = 'true';
+                target.src = fallbackImage;
+              }}
             />
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/5" />

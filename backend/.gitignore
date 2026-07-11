@@ -1,4 +1,10 @@
+<<<<<<< HEAD
 # Python
+=======
+.env
+.env.*
+!.env.example
+>>>>>>> f99511c3373f56ca75692c0131cd131942555428
 __pycache__/
 *.pyc
 *.pyo
@@ -6,8 +12,13 @@ __pycache__/
 
 # Virtual environment
 venv/
+<<<<<<< HEAD
 
 # Environment files
 .env
 .env.*
 !.env.example
+=======
+.pytest_cache/
+.venv
+>>>>>>> f99511c3373f56ca75692c0131cd131942555428

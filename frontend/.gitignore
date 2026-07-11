@@ -16,6 +16,9 @@ dist-ssr
 
 # Local files
 *.local
+.env
+.env.*
+!.env.example
 
 # Environment files
 .env

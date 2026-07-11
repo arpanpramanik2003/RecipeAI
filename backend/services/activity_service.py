@@ -59,6 +59,7 @@ def initialize_activity_store() -> None:
             with connection.cursor() as cursor:
                 cursor.execute(CREATE_ACTIVITY_TABLE_SQL)
                 cursor.execute(CREATE_ACTIVITY_INDEX_SQL)
+        logger.info("Activity store initialized and ready")
     except Exception as exc:
         logger.warning("Unable to initialize Supabase activity store: %s", exc)
 
@@ -98,6 +99,13 @@ def log_user_activity(
                         error_message,
                     ),
                 )
+        logger.info(
+            "Activity logged user_id=%s type=%s status=%s endpoint=%s",
+            user_id,
+            activity_type,
+            status,
+            endpoint,
+        )
     except Exception as exc:
         logger.warning("Unable to write activity log: %s", exc)
 
@@ -138,6 +146,7 @@ def get_user_activity_history(*, user_id: str, limit: int = 50) -> list[dict[str
                     "created_at": row[6].isoformat() if row[6] else "",
                 }
             )
+        logger.info("Fetched activity history user_id=%s count=%s", user_id, len(history))
         return history
     except Exception as exc:
         logger.warning("Unable to fetch activity history: %s", exc)
@@ -165,6 +174,7 @@ def clear_user_activity_history(*, user_id: str) -> int:
                 )
                 rows = cursor.fetchall()
 
+            logger.info("Cleared activity history user_id=%s deleted=%s", user_id, len(rows))
         return len(rows)
     except Exception as exc:
         logger.warning("Unable to clear activity history: %s", exc)

@@ -5,7 +5,7 @@ echo =========================================
 
 echo.
 echo Starting Backend Server...
-start "RecipeAI Backend" cmd /k "cd backend && call .venv\Scripts\activate && uvicorn main:app --reload"
+start "RecipeAI Backend" cmd /k "cd /d backend && .venv\Scripts\python.exe -m uvicorn main:app --reload"
 
 echo.
 echo Starting Frontend Development Server...

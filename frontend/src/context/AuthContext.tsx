@@ -5,7 +5,7 @@ interface AuthContextValue {
   user: UserResource | null;
   isLoading: boolean;
   signOut: () => Promise<void>;
-  getAccessToken: () => Promise<string | null>;
+  getAccessToken: (options?: { forceRefresh?: boolean }) => Promise<string | null>;
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
@@ -16,8 +16,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const isLoading = !isAuthLoaded || !isUserLoaded;
 
-  const getAccessToken = useCallback(async () => {
-    return getToken();
+  const getAccessToken = useCallback(async (options?: { forceRefresh?: boolean }) => {
+    const maxAttempts = 3;
+
+    for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
+      const token = await getToken({ skipCache: options?.forceRefresh || attempt > 0 });
+      if (token) {
+        return token;
+      }
+
+      // Clerk token can be briefly unavailable immediately after route/auth transitions.
+      await new Promise((resolve) => setTimeout(resolve, 120));
+    }
+
+    return null;
   }, [getToken]);
 
   const handleSignOut = useCallback(async () => {
