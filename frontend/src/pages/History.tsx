@@ -221,7 +221,7 @@ const HistorySectionBlock = ({
 );
 
 const History = () => {
-  const { getAccessToken } = useAuth();
+  const { getAccessToken, user, isLoading: isAuthLoading } = useAuth();
   const [items, setItems] = useState<ActivityHistoryItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isClearing, setIsClearing] = useState(false);
@@ -232,15 +232,39 @@ const History = () => {
     setError(null);
 
     try {
-      const token = await getAccessToken();
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/activity-history?limit=100`, {
+      let token = await getAccessToken();
+      if (!token) {
+        throw new Error('Unable to load activity history. Please sign in again.');
+      }
+
+      let response = await fetch(`${import.meta.env.VITE_API_URL}/api/activity-history?limit=100`, {
         headers: {
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          Authorization: `Bearer ${token}`,
         },
       });
 
+      if (response.status === 401) {
+        token = await getAccessToken({ forceRefresh: true });
+        if (!token) {
+          throw new Error('Session expired. Please sign in again.');
+        }
+
+        response = await fetch(`${import.meta.env.VITE_API_URL}/api/activity-history?limit=100`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+      }
+
       if (!response.ok) {
-        throw new Error('Unable to load activity history');
+        let detail = 'Unable to load activity history';
+        try {
+          const payload = await response.json();
+          if (payload?.detail) detail = String(payload.detail);
+        } catch {
+          // Keep default message when response body is not JSON.
+        }
+        throw new Error(detail);
       }
 
       const payload = await response.json();
@@ -253,8 +277,10 @@ const History = () => {
   };
 
   useEffect(() => {
-    loadHistory();
-  }, [getAccessToken]);
+    if (isAuthLoading || !user) return;
+
+    void loadHistory();
+  }, [getAccessToken, isAuthLoading, user]);
 
   const handleClearHistory = async () => {
     const confirmed = window.confirm('Clear all your history entries? This cannot be undone.');
@@ -264,16 +290,41 @@ const History = () => {
     setError(null);
 
     try {
-      const token = await getAccessToken();
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/activity-history`, {
+      let token = await getAccessToken();
+      if (!token) {
+        throw new Error('Unable to clear history. Please sign in again.');
+      }
+
+      let response = await fetch(`${import.meta.env.VITE_API_URL}/api/activity-history`, {
         method: 'DELETE',
         headers: {
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          Authorization: `Bearer ${token}`,
         },
       });
 
+      if (response.status === 401) {
+        token = await getAccessToken({ forceRefresh: true });
+        if (!token) {
+          throw new Error('Session expired. Please sign in again.');
+        }
+
+        response = await fetch(`${import.meta.env.VITE_API_URL}/api/activity-history`, {
+          method: 'DELETE',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+      }
+
       if (!response.ok) {
-        throw new Error('Unable to clear history');
+        let detail = 'Unable to clear history';
+        try {
+          const payload = await response.json();
+          if (payload?.detail) detail = String(payload.detail);
+        } catch {
+          // Keep default message when response body is not JSON.
+        }
+        throw new Error(detail);
       }
 
       await loadHistory();

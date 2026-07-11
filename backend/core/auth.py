@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import base64
 import json
+import logging
 from dataclasses import dataclass
 from threading import Lock
 from typing import Any
@@ -12,6 +13,8 @@ from fastapi import Header, HTTPException
 from jwt import PyJWKClient
 
 from core.config import settings
+
+logger = logging.getLogger(__name__)
 
 _jwks_clients: dict[str, PyJWKClient] = {}
 _jwks_lock = Lock()
@@ -262,5 +265,9 @@ def verify_clerk_token(token: str) -> AuthenticatedUser:
 
 
 def get_authenticated_user(authorization: str | None = Header(default=None)) -> AuthenticatedUser:
-    token = _get_bearer_token(authorization)
-    return verify_clerk_token(token)
+    try:
+        token = _get_bearer_token(authorization)
+        return verify_clerk_token(token)
+    except HTTPException as exc:
+        logger.warning("Authentication failed: %s", exc.detail)
+        raise

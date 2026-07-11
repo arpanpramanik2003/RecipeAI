@@ -1,8 +1,16 @@
-from fastapi import FastAPI
+import logging
+
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from api.routes import router as api_router
 from services.activity_service import initialize_activity_store
 from core.config import settings
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s | %(levelname)s | %(name)s | %(message)s",
+)
+logger = logging.getLogger(__name__)
 
 app = FastAPI(title="Recipe Maker AI Backend")
 
@@ -33,6 +41,14 @@ app.add_middleware(
 )
 
 app.include_router(api_router, prefix="/api")
+
+
+@app.middleware("http")
+async def log_requests(request: Request, call_next):
+    response = await call_next(request)
+    if request.url.path.startswith("/api"):
+        logger.info("%s %s -> %s", request.method, request.url.path, response.status_code)
+    return response
 
 
 @app.on_event("startup")
