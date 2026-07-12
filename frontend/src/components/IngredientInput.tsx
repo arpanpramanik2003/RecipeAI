@@ -87,6 +87,7 @@ const IngredientInput = ({ ingredients, onChange }: IngredientInputProps) => {
             value={value}
             onChange={(e) => setValue(e.target.value)}
             onKeyDown={handleKeyDown}
+            onBlur={addIngredient}
             placeholder={ingredients.length === 0 ? 'Type ingredient, press Enter…' : 'Add more…'}
             className="flex-1 bg-transparent outline-none text-sm text-foreground placeholder:text-muted-foreground/50 min-w-0"
           />
