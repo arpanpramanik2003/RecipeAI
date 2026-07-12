@@ -73,11 +73,15 @@ const HeroSection = ({ onGenerate, isLoading }: HeroSectionProps) => {
                   max={10}
                   value={servings}
                   onChange={(e) => setServings(Number(e.target.value))}
-                  className="flex-1 h-2 rounded-full appearance-none bg-primary/10 dark:bg-primary/20 cursor-pointer accent-primary
+                  className="flex-1 h-2 rounded-full appearance-none bg-primary/15 dark:bg-primary/25 cursor-pointer accent-primary
                     [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5
                     [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:appearance-none
-                    [&::-webkit-slider-thumb]:bg-card [&::-webkit-slider-thumb]:border-[3px]
-                    [&::-webkit-slider-thumb]:border-primary [&::-webkit-slider-thumb]:shadow-md"
+                    [&::-webkit-slider-thumb]:bg-white dark:[&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:border-[3px]
+                    [&::-webkit-slider-thumb]:border-primary [&::-webkit-slider-thumb]:shadow-[0_1px_6px_rgba(59,130,246,0.3)]
+                    [&::-moz-range-thumb]:w-[14px] [&::-moz-range-thumb]:h-[14px]
+                    [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-white
+                    [&::-moz-range-thumb]:border-[3px] [&::-moz-range-thumb]:border-primary
+                    [&::-moz-range-thumb]:shadow-[0_1px_6px_rgba(59,130,246,0.3)]"
                 />
                 <motion.div
                   key={servings}

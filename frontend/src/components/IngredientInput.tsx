@@ -8,12 +8,12 @@ interface IngredientInputProps {
 }
 
 const tagColors = [
-  { bg: 'bg-primary/15', text: 'text-primary', border: 'border-primary/30', dot: 'bg-primary' },
-  { bg: 'bg-emerald-500/15', text: 'text-emerald-700', border: 'border-emerald-400/30', dot: 'bg-emerald-500' },
-  { bg: 'bg-amber-500/15', text: 'text-amber-700', border: 'border-amber-400/30', dot: 'bg-amber-500' },
-  { bg: 'bg-violet-500/15', text: 'text-violet-700', border: 'border-violet-400/30', dot: 'bg-violet-500' },
-  { bg: 'bg-red-500/15', text: 'text-red-700', border: 'border-red-400/30', dot: 'bg-red-500' },
-  { bg: 'bg-cyan-500/15', text: 'text-cyan-700', border: 'border-cyan-400/30', dot: 'bg-cyan-500' },
+  { bg: 'bg-primary/15 dark:bg-primary/25', text: 'text-primary dark:text-blue-300', border: 'border-primary/30 dark:border-primary/40', dot: 'bg-primary shadow-[0_0_8px_rgba(59,130,246,0.5)]' },
+  { bg: 'bg-emerald-500/15 dark:bg-emerald-500/25', text: 'text-emerald-700 dark:text-emerald-300', border: 'border-emerald-400/30 dark:border-emerald-500/40', dot: 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]' },
+  { bg: 'bg-amber-500/15 dark:bg-amber-500/25', text: 'text-amber-700 dark:text-amber-300', border: 'border-amber-400/30 dark:border-amber-500/45', dot: 'bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.5)]' },
+  { bg: 'bg-violet-500/15 dark:bg-violet-500/25', text: 'text-violet-700 dark:text-violet-300', border: 'border-violet-400/30 dark:border-violet-500/45', dot: 'bg-violet-500 shadow-[0_0_8px_rgba(139,92,246,0.5)]' },
+  { bg: 'bg-red-500/15 dark:bg-red-500/25', text: 'text-red-700 dark:text-red-300', border: 'border-red-400/30 dark:border-red-500/40', dot: 'bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.5)]' },
+  { bg: 'bg-cyan-500/15 dark:bg-cyan-500/25', text: 'text-cyan-700 dark:text-cyan-300', border: 'border-cyan-400/30 dark:border-cyan-500/40', dot: 'bg-cyan-500 shadow-[0_0_8px_rgba(6,182,212,0.5)]' },
 ];
 
 const IngredientInput = ({ ingredients, onChange }: IngredientInputProps) => {
@@ -53,9 +53,9 @@ const IngredientInput = ({ ingredients, onChange }: IngredientInputProps) => {
         )}
       </div>
 
-      <div className={`flex flex-wrap gap-2 p-4 rounded-2xl bg-background/90 border border-primary/45 min-h-[65px]
+      <div className={`flex flex-wrap gap-2 p-4 rounded-2xl bg-background/95 dark:bg-background/45 border border-primary/45 dark:border-primary/35 min-h-[65px]
         focus-within:ring-2 focus-within:ring-primary/30 focus-within:border-primary/60 transition-all duration-300 backdrop-blur-md
-        shadow-[0_2px_12px_rgba(59,130,246,0.06)] hover:border-primary/55`}>
+        shadow-[0_2px_12px_rgba(59,130,246,0.06)] dark:shadow-[0_2px_16px_rgba(0,0,0,0.4)] hover:border-primary/55`}>
         <AnimatePresence mode="popLayout">
           {ingredients.map((ing, i) => {
             const color = tagColors[i % tagColors.length];
@@ -64,9 +64,10 @@ const IngredientInput = ({ ingredients, onChange }: IngredientInputProps) => {
                 key={ing}
                 initial={{ scale: 0.75, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
+                whileHover={{ scale: 1.04, y: -1 }}
                 exit={{ scale: 0.75, opacity: 0 }}
                 transition={{ duration: 0.18 }}
-                className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-semibold border ${color.bg} ${color.text} ${color.border} cursor-default`}
+                className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-semibold border ${color.bg} ${color.text} ${color.border} cursor-default shadow-sm backdrop-blur-sm`}
               >
                 <span className={`w-1.5 h-1.5 rounded-full ${color.dot} opacity-80`} />
                 {ing}
